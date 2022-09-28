@@ -4,53 +4,11 @@
 #include <vector>
 #include <memory>
 #include <cmath>
+#include <matrix.h>
 
 #define LOG_ERROR(msg) printf("ERROR: " msg "\n");
 
-struct Vec3
-{
-    float x, y, z;
-    Vec3(){}
-    Vec3(float x_, float y_, float z_) : x(x_), y(y_), z(z_) {}
-    Vec3 operator+(const Vec3 &in) const
-    {
-        return Vec3(x + in.x, y + in.y, z + in.z);
-    }
-    Vec3 operator+(const float in) const
-    {
-        return Vec3(x + in, y + in, z + in);
-    }
-    Vec3 operator-(const float in) const
-    {
-        return Vec3(x - in, y - in, z - in);
-    }
-    Vec3 operator-(const Vec3 &in) const
-    {
-        return Vec3(x - in.x, y - in.y, z - in.z);
-    }
-    Vec3 cross(const Vec3 &in) const
-    {
-        return Vec3(y * in.z - in.y * z, z * in.x - x * in.z, x * in.y - in.x * y);
-    }
-    Vec3 &operator+=(const Vec3 &in)
-    {
-        x += in.x;
-        y += in.y;
-        z += in.z;
-        return *this;
-    }
-    float norm() const
-    {
-        return sqrt(x * x + y * y + z * z);
-    }
-    void normalize()
-    {
-        float mlt = 1.0f / norm();
-        x *= mlt;
-        y *= mlt;
-        z *= mlt;
-    }
-};
+
 
 class Material;
 
@@ -61,6 +19,7 @@ class Geometry
         virtual ~Geometry();
     protected:
         void initBuffers();
+        Mt44 mTransform;
         std::vector<Vec3> mPositions{};
         std::vector<Vec3> mNormals{};
         std::vector<uint32_t> mIndices{};
@@ -71,6 +30,7 @@ class Geometry
 class Renderer
 {
     public:
+        Renderer();
         ~Renderer();
         bool init();
         void resize(uint32_t width, uint32_t height);
