@@ -40,11 +40,6 @@ Mt44 &Mt44::operator*=(const float in)
     return *this;
 }
 
-float Mt44::getDet()
-{
-    return 0.0f;
-}
-
 Mt44 Mt44::getInversed() const
 {
     Mt44 ret_val;
@@ -86,19 +81,6 @@ Mt44 Mt44::getInversed() const
     ret_val *= (1.0f / det);
 
     return ret_val;
-}
-
-Mt44 Mt44::getTransposed() const
-{
-    Mt44 nm;
-    for (uint32_t i = 0; i < 4; ++i)
-    {
-        for (uint32_t j = 0; j < 4; ++j)
-        {
-            nm.v[i * 4 + j] = v[j * 4 + i];
-        }
-    }
-    return nm;
 }
 
 Mt44 getOrhographicProjection(float left, float right, float bottom, float top, float near, float far)

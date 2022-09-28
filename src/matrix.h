@@ -123,9 +123,7 @@ struct Mt44
     Mt44 operator*(const Mt44 &in) const;
     Mt44 &operator*=(const float in);
 
-    float getDet();
     Mt44 getInversed() const;
-    Mt44 getTransposed() const;
 };
 
 Mt44 getOrhographicProjection(float left, float right, float bottom, float top, float near, float far);
