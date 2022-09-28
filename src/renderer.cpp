@@ -1,13 +1,14 @@
 #include <renderer.h>
+#include <string>
+#include <GL/glew.h>
 
 std::string readAllFile(const std::string& path)
 {
-	FILE* in;
-	errno_t err = fopen_s(&in, path.c_str(), "r");
-	if (err != 0)
-	{
-		return "";
-	}
+	FILE* in = fopen(path.c_str(), "r");
+    if (in == nullptr)
+    {
+        return "";
+    }
 	fseek(in, 0, SEEK_END);
 	uint32_t size = ftell(in);
 	fseek(in, 0, SEEK_SET);
@@ -55,8 +56,8 @@ class Material
             glShaderSource(mVertexShaderHandle, 1, shaderSrcPtr, shaderSrcLength);
             glCompileShader(mVertexShaderHandle);
 
-            shaderSrcPtr[] = {fsSrc.c_str()};
-            shaderSrcLength[] = {static_cast<int32_t>(fsSrc.length())};
+            shaderSrcPtr[0] = fsSrc.c_str();
+            shaderSrcLength[0] = static_cast<int32_t>(fsSrc.length());
             glShaderSource(mFrShaderHandle, 1, shaderSrcPtr, shaderSrcLength);
             glCompileShader(mFrShaderHandle);
             mProgramHandle = glCreateProgram();
@@ -104,7 +105,7 @@ void Geometry::initBuffers()
 class Triangle : public Geometry
 {
     public:
-    Cube()
+    Triangle()
     {
 
     }
@@ -113,7 +114,7 @@ class Triangle : public Geometry
     {
 
     }
-}
+};
 
 class SineWave : public Geometry
 {
@@ -189,7 +190,7 @@ class SineWave : public Geometry
     private:
         uint64_t mResolution{};
         float mState{0};   
-}
+};
 
 Renderer::~Renderer()
 {}
@@ -199,13 +200,14 @@ bool Renderer::init()
 {
     glClearColor(0, 0, 0, 0);
     mMat = std::make_unique<Material>();
-    if (!mMat.init())
+    if (!mMat->init())
     {
         LOG_ERROR("Failed create material");
         return false;
     }
-    mObjects.push_back(std::make_unique<SineWave>());
+    mObjects.push_back(std::make_unique<SineWave>(32));
     mObjects.push_back(std::make_unique<Triangle>());
+    return true;
 }
 
 void Renderer::draw()

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <GLFW/glfw3.h>
+#include <renderer.h>
 
 
 class Window
@@ -30,12 +31,6 @@ class Window
                 }
 
                 glfwSetWindowUserPointer(mWindow, this);
-                glfwSetWindowSizeCallback(mWindow, windowResizeEvent);
-                glfwSetCursorPosCallback(mWindow, mousePositionEvent);
-                glfwSetMouseButtonCallback(mWindow, mouseActionEvent);
-                glfwSetScrollCallback(mWindow, mouseScrollEvent);
-                glfwSetKeyCallback(mWindow, keyEvent);
-                glfwSetCharCallback(mWindow, textEvent);
                 glfwMakeContextCurrent(mWindow);
 
                 return true;
@@ -56,7 +51,7 @@ class Window
         return mWindow;
     }
 
-}
+};
 
 
 int main()
